@@ -1,29 +1,28 @@
-$( document ).ready(function() {
-  console.log("Working");
-  $('body').append($('<h1>App of Todo-ness</h1>'));
-  $('body').append($('<input placeholder="Whatcha wanna do?"></input>'));
+$(document).ready(function() {
+  function initialize() {
+    $('body').append($('<h1>App of Todo-ness</h1>'));
+    $('body').append($('<input placeholder="Whatcha wanna do?"></input>'));
+    $('body').append($('<ul>'));
+    $('body').append($('<p id="itemsLeft"></p>'));
+    $('body').append($('<button id="deleteAll">Exterminate Completed</button>'));
+    $('input').keypress(entering);
+    $('ul').on('click', 'li', toggleComplete);
+    $('ul').on('click', 'span', deleteOneThing);
+    $('#deleteAll').on('click', deleteAllTheThings);
+  }
 
-  $('body').append($('<ul>'));
-  $('ul').append($('<li>Thing?<span class="delete">Delete</span></li>'));
-  $('ul').append($('<li>Another thing?<span class="delete">Delete</span></li>'));
-
-  $('body').append($('<p id="itemsLeft"></p>'));
-  countEmUp();
-  $('body').append($('<button id="deleteAll">Exterminate Completed</button>'));
-
-  var addAThing = function(thingToDo) {
+  function addAThing(thingToDo) {
     var newThingTodo = '<li>' + thingToDo + '<span class="delete">Delete</span></li>';
     $('ul').append($(newThingTodo));
     countEmUp();
-  };
+  }
 
-  $('input').keypress(function(e) {
-    if (e.which == 13) {
-      var newTodo = $('input').val();
-      addAThing(newTodo);
-      $('input').val("");
-    }
-  });
+  function entering(e) {
+    if (e.which != 13) { return; }
+    var newTodo = $('input').val();
+    addAThing(newTodo);
+    $('input').val("");
+  }
 
   function countEmUp() {
     var count = $('ul li').length - $('li.completed').length;
@@ -31,18 +30,22 @@ $( document ).ready(function() {
     $('#itemsLeft').html(itemsLeftString);
   }
 
-  $('ul').on('click', 'li', function() {
+  function toggleComplete() {
     $(this).toggleClass('completed');
     countEmUp();
-  });
+  }
 
-  $('ul').on('click', 'span', function(){
+  function deleteOneThing() {
     $(this).parent().remove();
-  });
+  }
 
-  $('#deleteAll').on('click', function() {
-    $('li.completed').fadeOut(300, function() {
+  function deleteAllTheThings() {
+    $("li.completed").fadeOut(300, function() {
       $(this).remove();
     });
-  });
+  }
+
+  initialize();
+  countEmUp();
+
 });
