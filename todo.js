@@ -12,16 +12,20 @@ $(document).ready(function() {
   }
 
   function addAThing(thingToDo) {
-    var newThingTodo = '<li>' + thingToDo + '<span class="delete">Delete</span></li>';
-    $('ul').append($(newThingTodo));
+    var newThingTodo = $('<li>');
+    newThingTodo.html(thingToDo + '<span class="delete">Delete</span>');
+    $('ul').append(newThingTodo);
+    newThingTodo.fadeIn(400);
     countEmUp();
   }
 
   function entering(e) {
     if (e.which != 13) { return; }
-    var newTodo = $('input').val();
-    addAThing(newTodo);
-    $('input').val("");
+    var newTodo = $.trim($('input').val());
+    if(newTodo !== "") {
+      addAThing(newTodo);
+      $('input').val("");
+    }
   }
 
   function countEmUp() {
@@ -36,11 +40,13 @@ $(document).ready(function() {
   }
 
   function deleteOneThing() {
-    $(this).parent().remove();
+    $(this).parent().fadeOut(400, function() {
+      $(this).remove();
+    });
   }
 
   function deleteAllTheThings() {
-    $("li.completed").fadeOut(300, function() {
+    $("li.completed").fadeOut(400, function() {
       $(this).remove();
     });
   }

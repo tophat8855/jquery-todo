@@ -31,6 +31,7 @@ ul li {
   margin-bottom:1px;
   padding:8px 20px;
   font-size:22px;
+  display: none;
 }
 
 /* The span that will delete a single todo */
